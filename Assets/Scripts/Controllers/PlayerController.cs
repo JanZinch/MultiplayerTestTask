@@ -1,4 +1,5 @@
 ﻿using System;
+using Environment;
 using UnityEngine;
 using UnityEngine.UI;
 using Extensions;
@@ -14,8 +15,9 @@ namespace Controllers
         [Space]
         [SerializeField] private Joystick _motionJoystick;
         [SerializeField] private Button _shootingButton;
-        [SerializeField] private Rigidbody2D _rigidbody; 
-        
+        [SerializeField] private Rigidbody2D _rigidbody;
+        [SerializeField] private DestructibleObject _destructible;
+
         private Vector2 _motion = default;
         
         private static readonly Vector3 PlayerRotationMask = new Vector3(0.0f, 0.0f, 1.0f);
@@ -33,12 +35,6 @@ namespace Controllers
             if (_motion != Vector2.zero)
             {
                 transform.LookAt2D((Vector2)transform.position + _motion.normalized);
-                
-                /*Quaternion lookRotation = Quaternion.LookRotation(Vector3.up,_motion.normalized);
-                transform.eulerAngles = Vector3.Scale(lookRotation.eulerAngles, PlayerRotationMask);*/
-                
-                /*Quaternion lookRotation = Quaternion.LookRotation(_motion.normalized, Vector3.forward);
-                transform.eulerAngles = Vector3.Scale(lookRotation.eulerAngles, PlayerRotationMask);*/
             }
             
         }
@@ -47,6 +43,18 @@ namespace Controllers
         private void Update()
         {
             MoveByJoystick();
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.TryGetComponent<Coin>(out Coin coin))
+            {
+                coin.Collect();
+            }
+            else if (other.TryGetComponent<Projectile>(out Projectile projectile))
+            {
+                _destructible.MakeDamage(projectile.Catch());
+            }
         }
     }
 }
