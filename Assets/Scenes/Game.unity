@@ -262,7 +262,7 @@ MonoBehaviour:
   _maxSpeed: 3
   _damage: 35
   _shootingCooldown: 1
-  _motionJoystick: {fileID: 0}
+  _motionJoystick: {fileID: 1238452367}
   _shootingButton: {fileID: 719319320}
   _rigidbody: {fileID: 120928901}
 --- !u!1 &479863006
@@ -417,7 +417,7 @@ Canvas:
   m_GameObject: {fileID: 635423265}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 479863008}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -710,6 +710,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8170153791668043268, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
   m_PrefabInstance: {fileID: 1238452365}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1238452367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8170153791668043265, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
+  m_PrefabInstance: {fileID: 1238452365}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2027507756
 GameObject:
   m_ObjectHideFlags: 0
