@@ -132,8 +132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 10
-  _speed: 3
-  _rigidbody: {fileID: 0}
+  _speed: 10
+  _rigidbody: {fileID: 7155685653496729561}
+  _selfCollider: {fileID: 7155685653496729560}
 --- !u!50 &7155685653496729561
 Rigidbody2D:
   serializedVersion: 4

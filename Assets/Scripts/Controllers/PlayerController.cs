@@ -1,15 +1,14 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Environment;
 using UnityEngine;
 using UnityEngine.UI;
-using Extensions;
+using Managers;
 
 namespace Controllers
 {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private float _maxSpeed = 3.0f;
-        [SerializeField] private int _damage = 35;
         [SerializeField] private float _shootingCooldown = 1.0f;
         
         [Space]
@@ -17,31 +16,46 @@ namespace Controllers
         [SerializeField] private Button _shootingButton;
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private DestructibleObject _destructible;
+        [SerializeField] private List<Transform> _projectileSpawnPoints;
+        [SerializeField] private Collider2D _selfCollider;
+        
+        private float _timeBetweenShots;
+        private Vector2 _motion;
+        
+        private void OnEnable()
+        {
+            _shootingButton.onClick.AddListener(ShootIfReady);
+        }
 
-        private Vector2 _motion = default;
-        
-        private static readonly Vector3 PlayerRotationMask = new Vector3(0.0f, 0.0f, 1.0f);
-        
         private void MoveByJoystick()
         {
-            Debug.Log("Direction: " + _motionJoystick.Direction);
-            
-            _motion = new Vector2(
-                _motionJoystick.Horizontal * _maxSpeed,
-                _motionJoystick.Vertical * _maxSpeed);
-
+            _motion = _motionJoystick.Direction * _maxSpeed;
             _rigidbody.velocity = _motion;
             
             if (_motion != Vector2.zero)
             {
-                transform.LookAt2D((Vector2)transform.position + _motion.normalized);
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, _motionJoystick.Direction);
             }
-            
+        }
+
+        private void ShootIfReady()
+        {
+            if (_timeBetweenShots > _shootingCooldown)
+            {
+                foreach (Transform point in _projectileSpawnPoints)
+                {
+                    Projectile projectile = EnvironmentSpawner.Instance.SpawnProjectile(point.position, transform.up);
+                    Physics2D.IgnoreCollision(_selfCollider, projectile.Collider);
+                }
+                
+                _timeBetweenShots = 0.0f;
+            }
         }
         
-
         private void Update()
         {
+            _timeBetweenShots += Time.deltaTime;
+            
             MoveByJoystick();
         }
 
@@ -55,6 +69,11 @@ namespace Controllers
             {
                 _destructible.MakeDamage(projectile.Catch());
             }
+        }
+        
+        private void OnDisable()
+        {
+            _shootingButton.onClick.RemoveListener(ShootIfReady);
         }
     }
 }

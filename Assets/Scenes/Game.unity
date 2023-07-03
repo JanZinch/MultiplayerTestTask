@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &39749733
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 39749734}
+  m_Layer: 0
+  m_Name: projectile_spawn_point_left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &39749734
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39749733}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.5, y: 8.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 120928898}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &87662671
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,7 +276,9 @@ Transform:
   m_LocalPosition: {x: -4.83, y: 1.54, z: 0}
   m_LocalScale: {x: 0.0772934, y: 0.0772934, z: 0.0772934}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 39749734}
+  - {fileID: 151191441}
   m_Father: {fileID: 722682532}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -351,12 +384,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 3
-  _damage: 35
   _shootingCooldown: 1
   _motionJoystick: {fileID: 1238452367}
   _shootingButton: {fileID: 719319320}
   _rigidbody: {fileID: 120928901}
   _destructible: {fileID: 120928903}
+  _projectileSpawnPoints:
+  - {fileID: 39749734}
+  - {fileID: 151191441}
+  _selfCollider: {fileID: 120928900}
 --- !u!114 &120928903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +413,37 @@ MonoBehaviour:
   _onDeath:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &151191440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 151191441}
+  m_Layer: 0
+  m_Name: projectile_spawn_point_right
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &151191441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151191440}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.5, y: 8.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 120928898}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &479863006
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +836,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 722682532}
+  - component: {fileID: 722682533}
   m_Layer: 0
   m_Name: Room
   m_TagString: Untagged
@@ -798,6 +866,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &722682533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722682531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5271e80402b3477795b9007b7c2fa0eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectileOriginal: {fileID: 7155685653496729559, guid: d6c33a83b8ab6704f927426e244b485f, type: 3}
 --- !u!1 &968758074
 GameObject:
   m_ObjectHideFlags: 0
