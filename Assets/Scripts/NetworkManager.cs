@@ -19,7 +19,7 @@ public class NetworkManager : MonoBehaviour
     private void OnEnable()
     {
         _lobbyForm.OnCreateClick.AddListener(CreateLobby);
-        _lobbyForm.OnCreateClick.AddListener(JoinLobby);
+        _lobbyForm.OnJoinClick.AddListener(JoinLobby);
     }
 
     private async void Start()
@@ -58,8 +58,7 @@ public class NetworkManager : MonoBehaviour
         try
         {
             _lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, _maxPlayers);
-
-            Debug.Log("Created: " + _lobby.Name + " " + _lobby.MaxPlayers);
+            _lobbyForm.SetResultMessage(string.Format("Room {0} was created", _lobby.Name), Color.green);
         }
         catch (LobbyServiceException ex)
         {
@@ -86,12 +85,12 @@ public class NetworkManager : MonoBehaviour
 
             if (response.Results.Count == 0)
             {
-                Debug.Log("Lobby not exists");
+                _lobbyForm.SetResultMessage("This room don't exists", Color.red);
             }
             else
             {
                 await Lobbies.Instance.JoinLobbyByIdAsync(response.Results[0].Id);
-                Debug.Log("Joined");
+                _lobbyForm.SetResultMessage("Successfully joined", Color.green);
             }
         }
         catch (LobbyServiceException ex)
@@ -104,7 +103,7 @@ public class NetworkManager : MonoBehaviour
     private void OnDisable()
     {
         _lobbyForm.OnCreateClick.RemoveListener(CreateLobby);
-        _lobbyForm.OnCreateClick.RemoveListener(JoinLobby);
+        _lobbyForm.OnJoinClick.RemoveListener(JoinLobby);
     }
 
 }
