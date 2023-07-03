@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common;
 using Environment;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ namespace Controllers
         [SerializeField] private Button _shootingButton;
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private DestructibleObject _destructible;
+        [SerializeField] private Score _score;
         [SerializeField] private List<Transform> _projectileSpawnPoints;
         [SerializeField] private Collider2D _selfCollider;
         
@@ -63,7 +65,7 @@ namespace Controllers
         {
             if (other.TryGetComponent<Coin>(out Coin coin))
             {
-                coin.Collect();
+                _score.Add(coin.Collect());
             }
             else if (other.TryGetComponent<Projectile>(out Projectile projectile))
             {

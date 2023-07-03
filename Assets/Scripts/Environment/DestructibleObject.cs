@@ -44,6 +44,11 @@ namespace Environment
         
         private void UpdateView(bool init = false)
         {
+            if (_view == null)
+            {
+                return;
+            }
+
             if (_view is Slider slider)
             {
                 if (init)
