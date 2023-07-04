@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
@@ -8,6 +10,10 @@ namespace UI
         [SerializeField] private Joystick _motionJoystick;
         [SerializeField] private Button _shootingButton;
 
+        [SerializeField] private Button _btnHost;
+        [SerializeField] private Button _btnServer;
+        [SerializeField] private Button _btnClient;
+        
         public Joystick MotionJoystick => _motionJoystick;
         public Button ShootingButton => _shootingButton;
         
@@ -25,5 +31,20 @@ namespace UI
             }
         }
 
+        private void OnEnable()
+        {
+            _btnHost.onClick.AddListener(() =>
+            {
+                NetworkManager.Singleton.StartHost();
+            });
+            _btnServer.onClick.AddListener(() =>
+            {
+                NetworkManager.Singleton.StartServer();
+            });
+            _btnClient.onClick.AddListener(() =>
+            {
+                NetworkManager.Singleton.StartClient();
+            });
+        }
     }
 }

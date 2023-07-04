@@ -6,9 +6,9 @@ namespace Managers
 {
     public class RoomManager : MonoBehaviour
     {
-        private void Start()
+        /*private void Start()
         {
-            NetworkManager.Singleton.StartHost();
-        }
+            NetworkManager.Singleton.StartClient();
+        }*/
     }
 }
