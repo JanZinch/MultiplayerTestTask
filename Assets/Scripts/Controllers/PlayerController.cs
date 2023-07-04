@@ -17,6 +17,7 @@ namespace Controllers
         [SerializeField] private DestructibleObject _destructible;
         [SerializeField] private Score _score;
         [SerializeField] private List<Transform> _projectileSpawnPoints;
+        [SerializeField] private Renderer _renderer;
         [SerializeField] private Collider2D _selfCollider;
 
         private bool _isSelfController;
@@ -35,6 +36,11 @@ namespace Controllers
             _isSelfController = true;
             
             _shootingButton.onClick.AddListener(ShootIfReady);
+        }
+
+        public void SetColor(Color color)
+        {
+            _renderer.material.color = color;
         }
 
         /*private void OnEnable()

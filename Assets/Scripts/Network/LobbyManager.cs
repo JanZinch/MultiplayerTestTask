@@ -29,7 +29,7 @@ namespace Network
 
         private Role _role = Role.None;
         
-        private bool _relayAccepted;
+        private bool _sessionStarts;
         
         private void OnEnable()
         {
@@ -79,7 +79,7 @@ namespace Network
                     {
                         _lobby = await LobbyService.Instance.GetLobbyAsync(_lobby.Id);
 
-                        if (!_relayAccepted && _lobby.Players.Count >= 2)
+                        if (StartSessionCause(_lobby.Players.Count >= 2))
                         {
                             string joinCode = await _relayManager.CreateRelay();
 
@@ -94,26 +94,34 @@ namespace Network
                             });
                             
                             _relayManager.Launch();
-                            
-                            _relayAccepted = true;
                         }
                     }
                     else if (_role == Role.Client)
                     {
                         _lobby = await LobbyService.Instance.GetLobbyAsync(_lobby.Id);
                         
-                        if (!_relayAccepted && _lobby.Data[StartGameKey].Value != string.Empty)
+                        if (StartSessionCause(_lobby.Data[StartGameKey].Value != string.Empty))
                         {
                             Debug.Log("Try Join Relay");
                             
                             await _relayManager.JoinRelay(_lobby.Data[StartGameKey].Value);
                             
                             _relayManager.Launch();
-                            _relayAccepted = true;
+                            
                         }
                     }
                 }
             }
+        }
+
+        private bool StartSessionCause(bool cause)
+        {
+            if (!_sessionStarts && cause)
+            {
+                _sessionStarts = true;
+                return true;
+            }
+            else return false;
         }
 
         private void Update()

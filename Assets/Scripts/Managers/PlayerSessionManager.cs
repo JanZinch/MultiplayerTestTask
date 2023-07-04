@@ -15,6 +15,11 @@ namespace Managers
             if (IsOwner)
             {
                 _playerController.InjectControllers(HeadUpDisplay.Instance.MotionJoystick, HeadUpDisplay.Instance.ShootingButton);
+                _playerController.SetColor(Color.yellow);
+            }
+            else
+            {
+                _playerController.SetColor(Color.green);
             }
         }
     }
