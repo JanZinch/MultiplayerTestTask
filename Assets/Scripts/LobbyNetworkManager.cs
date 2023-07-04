@@ -7,7 +7,7 @@ using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 
-public class NetworkManager : MonoBehaviour
+public class LobbyNetworkManager : MonoBehaviour
 {
     [SerializeField] private int _maxPlayers = 5;
     [SerializeField] private LobbyForm _lobbyForm; 

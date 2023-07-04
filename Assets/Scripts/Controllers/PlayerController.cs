@@ -13,21 +13,37 @@ namespace Controllers
         [SerializeField] private float _shootingCooldown = 1.0f;
         
         [Space]
-        [SerializeField] private Joystick _motionJoystick;
-        [SerializeField] private Button _shootingButton;
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private DestructibleObject _destructible;
         [SerializeField] private Score _score;
         [SerializeField] private List<Transform> _projectileSpawnPoints;
         [SerializeField] private Collider2D _selfCollider;
+
+        private bool _isSelfController;
+        private Joystick _motionJoystick;
+        private Button _shootingButton;
         
         private float _timeBetweenShots;
         private Vector2 _motion;
-        
-        private void OnEnable()
+
+        public void InjectControllers(Joystick motionJoystick, Button shootingButton)
         {
+            Debug.Log("Injected");
+            
+            _motionJoystick = motionJoystick;
+            _shootingButton = shootingButton;
+            _isSelfController = true;
+            
             _shootingButton.onClick.AddListener(ShootIfReady);
         }
+
+        /*private void OnEnable()
+        {
+            if (_isSelfController)
+            {
+                _shootingButton.onClick.AddListener(ShootIfReady);
+            }
+        }*/
 
         private void MoveByJoystick()
         {
@@ -56,9 +72,12 @@ namespace Controllers
         
         private void Update()
         {
-            _timeBetweenShots += Time.deltaTime;
-            
-            MoveByJoystick();
+            if (_isSelfController)
+            {
+                _timeBetweenShots += Time.deltaTime;
+                MoveByJoystick();
+                
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -73,9 +92,12 @@ namespace Controllers
             }
         }
         
-        private void OnDisable()
+        /*private void OnDisable()
         {
-            _shootingButton.onClick.RemoveListener(ShootIfReady);
-        }
+            if (_isSelfController)
+            {
+                _shootingButton.onClick.RemoveListener(ShootIfReady);
+            }
+        }*/
     }
 }
