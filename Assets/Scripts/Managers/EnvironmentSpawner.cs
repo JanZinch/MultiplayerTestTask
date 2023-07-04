@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using Environment;
+using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    public class EnvironmentSpawner : MonoBehaviour
+    public class EnvironmentSpawner : NetworkBehaviour
     {
         [SerializeField] private float _spawnCooldown = 5f;
         [SerializeField] private Rect _coinsSpawnArea = new Rect(0f, 0f, 16f, 8f);
@@ -31,9 +32,19 @@ namespace Managers
             }
         }
 
+        public override void OnNetworkSpawn()
+        {
+            Debug.Log("O IsHost: " + IsHost);
+        }
+
         private void Start()
         {
-            StartCoroutine(SpawnCoins(_spawnCooldown));
+            Debug.Log("S IsHost: " + IsHost);
+            
+            if (IsHost)
+            {
+                StartCoroutine(SpawnCoins(_spawnCooldown));
+            }
         }
 
         public Projectile SpawnProjectile(Vector2 position, Vector2 direction)
@@ -44,7 +55,7 @@ namespace Managers
         
         public Coin SpawnCoin(Vector2 position)
         {
-            return Instantiate<Coin>(_coinOriginal, position, Quaternion.identity);
+            return Instantiate<Coin>(_coinOriginal, position, Quaternion.identity).SynchronizeInNetwork();
         }
 
         private IEnumerator SpawnCoins(float spawnCooldown)

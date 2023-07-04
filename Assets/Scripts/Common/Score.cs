@@ -18,7 +18,7 @@ namespace Common
         public void Set(int score)
         {
             _score = score;
-            _scoreText.text = _score.ToString();
+            if (_scoreText != null) _scoreText.text = _score.ToString();
         }
 
         public void Add(int addend)

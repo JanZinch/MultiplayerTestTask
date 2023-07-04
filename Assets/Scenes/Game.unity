@@ -877,6 +877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 722682532}
   - component: {fileID: 722682533}
+  - component: {fileID: 722682535}
   - component: {fileID: 722682534}
   m_Layer: 0
   m_Name: Room
@@ -914,7 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5271e80402b3477795b9007b7c2fa0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnCooldown: 100
+  _spawnCooldown: 1
   _coinsSpawnArea:
     serializedVersion: 2
     x: 0
@@ -935,6 +936,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a283941069c46cebc88c542dbecce78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &722682535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722682531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1401467190
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1001 &1067563646
 PrefabInstance:
   m_ObjectHideFlags: 0
