@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Configs;
 using Environment;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,18 +21,20 @@ namespace Controllers
         [SerializeField] private DestructibleObject _destructible;
         [SerializeField] private Score _score;
         [SerializeField] private List<Transform> _projectileSpawnPoints;
+        
         [SerializeField] private Renderer _renderer;
         [SerializeField] private Collider2D _selfCollider;
-
+        [SerializeField] private RoomConfig _roomConfig;
+        
         private bool _locallyControlled;
         private Joystick _motionJoystick;
         private Button _shootingButton;
         
         private float _timeBetweenShots;
         private Vector2 _motion;
-
-        public event Action OnDeath;
+        
         public int Score => _score.Get();
+        public event Action OnDeath;
         
         public void InjectControlDevices(Joystick motionJoystick, Button shootingButton)
         {
@@ -73,10 +76,22 @@ namespace Controllers
             OnDeath?.Invoke();
         }
 
+        private static Vector2 Clamp(Vector2 position, Rect area)
+        {
+            position.x = Mathf.Clamp(position.x, area.xMin, area.xMax);
+            position.y = Mathf.Clamp(position.y, area.yMin, area.yMax);
+            return position;
+        }
+        
         private void MoveByJoystick()
         {
             _motion = _motionJoystick.Direction * _maxSpeed;
-            _rigidbody.velocity = _motion;
+            //_rigidbody.velocity = _motion;
+
+            Vector2 newClampedPosition =
+                Clamp((Vector2)transform.position + _motion * Time.deltaTime, _roomConfig.Area);
+
+            _rigidbody.MovePosition(newClampedPosition);
             
             if (_motion != Vector2.zero)
             {

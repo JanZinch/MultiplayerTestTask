@@ -64,13 +64,8 @@ namespace Managers
             
             while (true)
             {
-                _cachedCoinSpawnPosition.x = Random.Range(
-                    _coinsSpawnArea.x - _coinsSpawnArea.width / 2.0f,
-                    _coinsSpawnArea.x + _coinsSpawnArea.width / 2.0f);
-            
-                _cachedCoinSpawnPosition.y = Random.Range(
-                    _coinsSpawnArea.y - _coinsSpawnArea.height / 2.0f,
-                    _coinsSpawnArea.y + _coinsSpawnArea.height / 2.0f);
+                _cachedCoinSpawnPosition.x = Random.Range(_coinsSpawnArea.xMin, _coinsSpawnArea.xMax);
+                _cachedCoinSpawnPosition.y = Random.Range(_coinsSpawnArea.yMin, _coinsSpawnArea.yMax);
 
                 SpawnCoin(_cachedCoinSpawnPosition);
             

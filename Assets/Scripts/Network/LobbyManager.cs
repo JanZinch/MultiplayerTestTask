@@ -139,7 +139,7 @@ namespace Network
             
             if (string.IsNullOrEmpty(lobbyName))
             {
-                _lobbyForm.SetResultMessage("Input lobby name", Color.red);
+                _lobbyForm.SetResultMessage("Input room name", Color.red);
                 return false;
             }
 
@@ -163,7 +163,6 @@ namespace Network
                 _lobbyForm.gameObject.SetActive(false);
                 _lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, _maxPlayers, createOptions);
                 _role = Role.Host;
-                //_lobbyForm.SetResultMessage(string.Format("Room {0} was created", _lobby.Name), Color.green);
                 
                 PlayerProfilesManager.Instance.InitLocalPlayer(playerName, _role);
                 
@@ -194,14 +193,13 @@ namespace Network
 
                 if (response.Results.Count == 0)
                 {
-                    _lobbyForm.SetResultMessage("This room don't exists", Color.red);
+                    _lobbyForm.SetResultMessage("This room doesn't exists", Color.red);
                 }
                 else
                 {
                     _lobbyForm.gameObject.SetActive(false);
                     _lobby = await Lobbies.Instance.JoinLobbyByIdAsync(response.Results[0].Id);
                     _role = Role.Client;
-                    //_lobbyForm.SetResultMessage("Successfully joined", Color.green);
                     
                     PlayerProfilesManager.Instance.InitLocalPlayer(playerName, _role);
                 }
