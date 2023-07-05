@@ -9,6 +9,7 @@ namespace UI
 {
     public class LobbyForm : MonoBehaviour
     {
+        [SerializeField] private TMP_InputField _playerName;
         [SerializeField] private TMP_InputField _newLobbyName;
         [SerializeField] private TMP_InputField _existingLobbyName;
         
@@ -17,11 +18,11 @@ namespace UI
 
         [SerializeField] private TextMeshProUGUI _resultMessage;
         
-        [SerializeField] private UnityEvent<string> _onCreateClick;
-        [SerializeField] private UnityEvent<string> _onJoinClick;
+        [SerializeField] private UnityEvent<string, string> _onCreateClick;
+        [SerializeField] private UnityEvent<string, string> _onJoinClick;
         
-        public UnityEvent<string> OnCreateClick => _onCreateClick;
-        public UnityEvent<string> OnJoinClick => _onJoinClick;
+        public UnityEvent<string, string> OnCreateClick => _onCreateClick;
+        public UnityEvent<string, string> OnJoinClick => _onJoinClick;
 
         private void OnEnable()
         {
@@ -31,12 +32,12 @@ namespace UI
 
         private void CreateLobby()
         {
-            _onCreateClick?.Invoke(_newLobbyName.text);
+            _onCreateClick?.Invoke(_playerName.text, _newLobbyName.text);
         }
         
         private void JoinLobby()
         {
-            _onJoinClick?.Invoke(_existingLobbyName.text);
+            _onJoinClick?.Invoke(_playerName.text, _existingLobbyName.text);
         }
 
         public void SetResultMessage(string text, Color color)

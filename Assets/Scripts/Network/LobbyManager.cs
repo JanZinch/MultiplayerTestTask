@@ -17,8 +17,6 @@ namespace Network
         [SerializeField] private LobbyForm _lobbyForm;
         [SerializeField] private RelayManager _relayManager;
         
-        //private Lobby _hostedLobby;
-        //private Lobby _joinedLobby;
         private Lobby _lobby;
         
         private const float LobbyHeartbeatMax = 15.0f;
@@ -94,7 +92,7 @@ namespace Network
                                 }
                             });
                             
-                            _relayManager.Launch();
+                            _relayManager.LaunchRelay();
                         }
                     }
                     else if (_role == Role.Client)
@@ -107,7 +105,7 @@ namespace Network
                             
                             await _relayManager.JoinRelay(_lobby.Data[StartGameKey].Value);
                             
-                            _relayManager.Launch();
+                            _relayManager.LaunchRelay();
                             
                         }
                     }
@@ -131,10 +129,29 @@ namespace Network
             HandleLobbyPolling();
         }
 
-        private async void CreateLobby(string lobbyName)
+        private bool VerifyFormInput(string playerName, string lobbyName)
+        {
+            if (string.IsNullOrEmpty(playerName))
+            {
+                _lobbyForm.SetResultMessage("Input player name", Color.red);
+                return false;
+            }
+            
+            if (string.IsNullOrEmpty(lobbyName))
+            {
+                _lobbyForm.SetResultMessage("Input lobby name", Color.red);
+                return false;
+            }
+
+            return true;
+        }
+
+        private async void CreateLobby(string playerName, string lobbyName)
         {
             try
             {
+                if (!VerifyFormInput(playerName, lobbyName)) return;
+                
                 CreateLobbyOptions createOptions = new CreateLobbyOptions()
                 {
                     Data = new Dictionary<string, DataObject>()
@@ -143,9 +160,11 @@ namespace Network
                     }
                 };
                 
+                _lobbyForm.gameObject.SetActive(false);
                 _lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, _maxPlayers, createOptions);
                 _role = Role.Host;
-                _lobbyForm.SetResultMessage(string.Format("Room {0} was created", _lobby.Name), Color.green);
+                //_lobbyForm.SetResultMessage(string.Format("Room {0} was created", _lobby.Name), Color.green);
+                
             }
             catch (LobbyServiceException ex)
             {
@@ -154,10 +173,12 @@ namespace Network
         
         }
     
-        private async void JoinLobby(string lobbyName)
+        private async void JoinLobby(string playerName, string lobbyName)
         {
             try
             {
+                if (!VerifyFormInput(playerName, lobbyName)) return;
+                
                 QueryLobbiesOptions queryOptions = new QueryLobbiesOptions()
                 {
                     Count = 1,
@@ -175,9 +196,10 @@ namespace Network
                 }
                 else
                 {
+                    _lobbyForm.gameObject.SetActive(false);
                     _lobby = await Lobbies.Instance.JoinLobbyByIdAsync(response.Results[0].Id);
                     _role = Role.Client;
-                    _lobbyForm.SetResultMessage("Successfully joined", Color.green);
+                    //_lobbyForm.SetResultMessage("Successfully joined", Color.green);
                 }
             }
             catch (LobbyServiceException ex)

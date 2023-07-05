@@ -59,6 +59,11 @@ namespace Controllers
             }
         }*/
 
+        public override void OnNetworkSpawn()
+        {
+            
+        }
+
         private void MoveByJoystick()
         {
             _motion = _motionJoystick.Direction * _maxSpeed;

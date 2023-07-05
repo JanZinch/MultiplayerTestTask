@@ -65,7 +65,7 @@ namespace Network
             }
         }
 
-        public void Launch()
+        public void LaunchRelay()
         {
             SceneManager.activeSceneChanged += OnSceneChanged;
             SceneManager.LoadScene("Game");
@@ -83,6 +83,11 @@ namespace Network
             }
             
             SceneManager.activeSceneChanged -= OnSceneChanged;
+        }
+
+        public void CompleteRelay()
+        {
+            NetworkManager.Singleton.Shutdown();
         }
 
     }
