@@ -1,4 +1,5 @@
 ﻿using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -6,40 +7,43 @@ using UnityEngine.UI;
 
 namespace Environment
 {
-    public class DestructibleObject : MonoBehaviour
+    public class DestructibleObject : NetworkBehaviour
     {
         [SerializeField] private int _maxHealth = 100;
         [SerializeField] private UIBehaviour _view;
         [SerializeField] private UnityEvent<int> _onHealthUpdate;
         [SerializeField] private UnityEvent _onDeath;
         
-        private int _health;
+        private NetworkVariable<int> _health = new NetworkVariable<int>();
         
-        public double Health => _health;
+        public double Health => _health.Value;
         public UnityEvent<int> OnHealthUpdate => _onHealthUpdate;
         public UnityEvent OnDeath => _onDeath;
-        
-        private void Awake()
+
+        public override void OnNetworkSpawn()
         {
-            _health = _maxHealth;
-            UpdateView(true);
+            _health.OnValueChanged += OnHealthValueChanged;
+            _health.Value = _maxHealth;
         }
 
+        private void OnHealthValueChanged(int previous, int current)
+        {
+            UpdateView();
+        }
+        
         public void MakeDamage(int damage)
         {
-            _health = Mathf.Clamp(_health - damage, 0, _maxHealth);
+            _health.Value = Mathf.Clamp(_health.Value - damage, 0, _maxHealth);
             
-            _onHealthUpdate?.Invoke(_health);
+            _onHealthUpdate?.Invoke(_health.Value);
             
-            if (_health <= 0)
+            if (_health.Value <= 0)
             {
                 _onDeath?.Invoke();
                 
                 _onHealthUpdate?.RemoveAllListeners();
                 _onDeath?.RemoveAllListeners();
             }
-            
-            UpdateView();
         }
 
         public void SetView(UIBehaviour view)
@@ -47,7 +51,7 @@ namespace Environment
             _view = view;
         }
 
-        private void UpdateView(bool init = false)
+        private void UpdateView()
         {
             if (_view == null)
             {
@@ -56,16 +60,12 @@ namespace Environment
 
             if (_view is Slider slider)
             {
-                if (init)
-                {
-                    slider.maxValue = _maxHealth;
-                }
-
-                slider.value = _health;
+                slider.maxValue = _maxHealth;
+                slider.value = _health.Value;
             }
             else if (_view is TextMeshProUGUI textMesh)
             {
-                textMesh.text = string.Format("{0:d}/{1:d}", _health, _maxHealth);
+                textMesh.text = string.Format("{0:d}/{1:d}", _health.Value, _maxHealth);
             }
         }
 
