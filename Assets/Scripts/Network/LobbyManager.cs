@@ -12,6 +12,7 @@ namespace Network
 {
     public class LobbyManager : MonoBehaviour
     {
+        [SerializeField] private int _minPlayers = 2;
         [SerializeField] private int _maxPlayers = 5;
         [SerializeField] private LobbyForm _lobbyForm;
         [SerializeField] private RelayManager _relayManager;
@@ -79,7 +80,7 @@ namespace Network
                     {
                         _lobby = await LobbyService.Instance.GetLobbyAsync(_lobby.Id);
 
-                        if (StartSessionCause(_lobby.Players.Count >= 2))
+                        if (StartSessionCause(_lobby.Players.Count >= _minPlayers))
                         {
                             string joinCode = await _relayManager.CreateRelay();
 

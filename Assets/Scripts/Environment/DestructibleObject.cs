@@ -41,7 +41,12 @@ namespace Environment
             
             UpdateView();
         }
-        
+
+        public void SetView(UIBehaviour view)
+        {
+            _view = view;
+        }
+
         private void UpdateView(bool init = false)
         {
             if (_view == null)

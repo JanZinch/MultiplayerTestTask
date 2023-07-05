@@ -1,5 +1,7 @@
 ﻿using System;
 using TMPro;
+using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Common
@@ -10,8 +12,19 @@ namespace Common
 
         private int _score;
 
-        private void Awake()
+        /*public override void OnNetworkSpawn()
         {
+            base.OnNetworkSpawn();
+            
+            Debug.Log("SET_");
+            Set(0);
+
+            Debug.Log("view: " + (_scoreText != null));
+        }*/
+
+        public void SetView(TextMeshProUGUI text)
+        {
+            _scoreText = text;
             Set(0);
         }
 

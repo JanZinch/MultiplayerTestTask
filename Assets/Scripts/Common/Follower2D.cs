@@ -10,6 +10,12 @@ namespace Common
         private Vector2 _cachedPosition;
         private Vector2 _delta;
 
+        public void SetTarget(Transform target)
+        {
+            _target = target;
+            _delta = _target.position - transform.position;
+        }
+
         private void Start()
         {
             _delta = _target.position - transform.position;

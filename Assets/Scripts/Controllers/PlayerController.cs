@@ -4,6 +4,7 @@ using Environment;
 using UnityEngine;
 using UnityEngine.UI;
 using Managers;
+using TMPro;
 
 namespace Controllers
 {
@@ -20,22 +21,28 @@ namespace Controllers
         [SerializeField] private Renderer _renderer;
         [SerializeField] private Collider2D _selfCollider;
 
-        private bool _isSelfController;
+        private bool _locallyControlled;
         private Joystick _motionJoystick;
         private Button _shootingButton;
         
         private float _timeBetweenShots;
         private Vector2 _motion;
 
-        public void InjectControllers(Joystick motionJoystick, Button shootingButton)
+        public void InjectControlDevices(Joystick motionJoystick, Button shootingButton)
         {
             Debug.Log("Injected");
             
             _motionJoystick = motionJoystick;
             _shootingButton = shootingButton;
-            _isSelfController = true;
+            _locallyControlled = true;
             
             _shootingButton.onClick.AddListener(ShootIfReady);
+        }
+
+        public void InjectViews(Slider heathBar, TextMeshProUGUI coinsCounter)
+        {
+            _destructible.SetView(heathBar);
+            _score.SetView(coinsCounter);
         }
 
         public void SetColor(Color color)
@@ -78,7 +85,7 @@ namespace Controllers
         
         private void Update()
         {
-            if (_isSelfController)
+            if (_locallyControlled)
             {
                 _timeBetweenShots += Time.deltaTime;
                 MoveByJoystick();
