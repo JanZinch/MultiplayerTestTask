@@ -10,10 +10,10 @@ using UnityEngine.Serialization;
 
 namespace Network
 {
-    public class PlayerProfilesManager : MonoBehaviour
+    public class PlayerProfilesManager : NetworkBehaviour
     {
         [SerializeField] private PlayerColorsConfig _playerColorsConfig;
-        [SerializeField] private GameEndPopup _gameEndPopupOriginal;
+        
         
         public static PlayerProfilesManager Instance { get; private set; }
         public string LocalPlayerName { get; private set; }
@@ -28,6 +28,7 @@ namespace Network
             else
             {
                 Instance = this;
+                DontDestroyOnLoad(this);
             }
         }
 
@@ -59,13 +60,17 @@ namespace Network
 
             if (_alivePlayers.Count == 1)
             {
-                OnGameEnd();
+                PlayerProfile winner = _alivePlayers.First.Value;
+                ShowGameEndPopupClientRpc(winner.Name, winner.Score);
             }
         }
-        
-        private void OnGameEnd()
+
+        [ClientRpc]
+        private void ShowGameEndPopupClientRpc(string winnerName, int winnerScore)
         {
-            Instantiate<GameEndPopup>(_gameEndPopupOriginal).Initialize(_alivePlayers.First.Value);
+            Debug.Log("HUD: " + (HeadUpDisplay.Instance != null));
+            
+            HeadUpDisplay.Instance.ShowGameEndPopup(winnerName, winnerScore);
         }
     }
 }
