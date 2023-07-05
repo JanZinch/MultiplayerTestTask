@@ -165,6 +165,8 @@ namespace Network
                 _role = Role.Host;
                 //_lobbyForm.SetResultMessage(string.Format("Room {0} was created", _lobby.Name), Color.green);
                 
+                PlayerProfilesManager.Instance.InitLocalPlayer(playerName, _role);
+                
             }
             catch (LobbyServiceException ex)
             {
@@ -200,6 +202,8 @@ namespace Network
                     _lobby = await Lobbies.Instance.JoinLobbyByIdAsync(response.Results[0].Id);
                     _role = Role.Client;
                     //_lobbyForm.SetResultMessage("Successfully joined", Color.green);
+                    
+                    PlayerProfilesManager.Instance.InitLocalPlayer(playerName, _role);
                 }
             }
             catch (LobbyServiceException ex)

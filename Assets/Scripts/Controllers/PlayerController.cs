@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common;
 using Environment;
 using UnityEngine;
@@ -29,6 +30,9 @@ namespace Controllers
         private float _timeBetweenShots;
         private Vector2 _motion;
 
+        public event Action OnDeath;
+        public int Score => _score.Get();
+        
         public void InjectControlDevices(Joystick motionJoystick, Button shootingButton)
         {
             Debug.Log("Injected");
@@ -61,7 +65,12 @@ namespace Controllers
 
         public override void OnNetworkSpawn()
         {
-            
+            _destructible.OnDeath.AddListener(OnDeathInvoke);
+        }
+
+        private void OnDeathInvoke()
+        {
+            OnDeath?.Invoke();
         }
 
         private void MoveByJoystick()
@@ -119,7 +128,12 @@ namespace Controllers
                 }
             }
         }
-        
+
+        public override void OnNetworkDespawn()
+        {
+            _destructible.OnDeath.RemoveListener(OnDeathInvoke);;
+        }
+
         /*private void OnDisable()
         {
             if (_isSelfController)
