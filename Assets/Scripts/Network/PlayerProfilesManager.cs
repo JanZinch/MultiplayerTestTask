@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Configs;
 using Controllers;
 using Managers;
 using UI;
@@ -11,12 +12,13 @@ namespace Network
 {
     public class PlayerProfilesManager : MonoBehaviour
     {
+        [SerializeField] private PlayerColorsConfig _playerColorsConfig;
         [SerializeField] private GameEndPopup _gameEndPopupOriginal;
         
         public static PlayerProfilesManager Instance { get; private set; }
         public string LocalPlayerName { get; private set; }
         private LinkedList<PlayerProfile> _alivePlayers = null;
-
+        
         private void Awake()
         {
             if (Instance != null)
@@ -37,6 +39,11 @@ namespace Network
             {
                 _alivePlayers = new LinkedList<PlayerProfile>();
             }
+        }
+
+        public Color GetRandomPlayerColor()
+        {
+            return _playerColorsConfig.GetRandomColor();
         }
 
         //[ServerRpc]

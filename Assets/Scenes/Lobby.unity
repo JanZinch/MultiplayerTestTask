@@ -600,6 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bd86bc98616437eb57fcf4618919933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerColorsConfig: {fileID: 11400000, guid: 955059f0e8d2345438a3644e87e5ab99, type: 2}
   _gameEndPopupOriginal: {fileID: 0}
 --- !u!1 &2015487019
 GameObject:
