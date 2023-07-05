@@ -15,23 +15,14 @@ namespace UI
         private const string WinnerNamePrefix = "Winner: ";
         private const string WinnerScorePrefix = "His score: ";
 
-        public GameEndPopup Initialize(PlayerProfile winner)
-        {
-            _winnerNameMessage.text = WinnerNamePrefix + winner.Name;
-            _winnerScoreMessage.text = WinnerScorePrefix + winner.Score;
-
-            _exitButton.onClick.AddListener(Exit);
-            
-            Time.timeScale = 0.0f;
-            
-            return this;
-        }
+        public Action _onExitCallback = null;
         
-        public GameEndPopup Initialize(string winnerName, int winnerScore)
+        public GameEndPopup Initialize(string winnerName, int winnerScore, Action onExitCallback)
         {
             _winnerNameMessage.text = WinnerNamePrefix + winnerName;
             _winnerScoreMessage.text = WinnerScorePrefix + winnerScore;
 
+            _onExitCallback = onExitCallback;
             _exitButton.onClick.AddListener(Exit);
             
             Time.timeScale = 0.0f;
@@ -42,6 +33,7 @@ namespace UI
         private void Exit()
         {
             Time.timeScale = 1.0f;
+            _onExitCallback?.Invoke();
         }
 
         private void OnDisable()

@@ -1,6 +1,6 @@
 ﻿using System;
 using Managers;
-using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,14 +31,9 @@ namespace UI
             }
         }
         
-        public void ShowGameEndPopup(PlayerProfile winner)
+        public void ShowGameEndPopup(string winnerName, int winnerScore, Action onExitCallback)
         {
-            Instantiate<GameEndPopup>(_gameEndPopupOriginal, transform).Initialize(winner);
-        }
-        
-        public void ShowGameEndPopup(string winnerName, int winnerScore)
-        {
-            Instantiate<GameEndPopup>(_gameEndPopupOriginal, transform).Initialize(winnerName, winnerScore);
+            Instantiate<GameEndPopup>(_gameEndPopupOriginal, transform).Initialize(winnerName, winnerScore, onExitCallback);
         }
     }
 }

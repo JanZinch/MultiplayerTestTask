@@ -86,12 +86,9 @@ namespace Controllers
         private void MoveByJoystick()
         {
             _motion = _motionJoystick.Direction * _maxSpeed;
-            //_rigidbody.velocity = _motion;
-
-            Vector2 newClampedPosition =
-                Clamp((Vector2)transform.position + _motion * Time.deltaTime, _roomConfig.Area);
-
-            _rigidbody.MovePosition(newClampedPosition);
+            
+            Vector2 newClampedPosition = Clamp((Vector2)transform.position + _motion * Time.deltaTime, _roomConfig.Area);
+            transform.position = newClampedPosition;
             
             if (_motion != Vector2.zero)
             {

@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e60f6f18c04444e8305509e2fbe0314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minPlayers: 1
+  _minPlayers: 2
   _maxPlayers: 5
   _lobbyForm: {fileID: 303273945}
   _relayManager: {fileID: 703362002}

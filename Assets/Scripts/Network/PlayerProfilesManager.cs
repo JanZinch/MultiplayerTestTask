@@ -6,6 +6,7 @@ using Managers;
 using UI;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace Network
@@ -13,7 +14,6 @@ namespace Network
     public class PlayerProfilesManager : NetworkBehaviour
     {
         [SerializeField] private PlayerColorsConfig _playerColorsConfig;
-        
         
         public static PlayerProfilesManager Instance { get; private set; }
         public string LocalPlayerName { get; private set; }
@@ -46,14 +46,12 @@ namespace Network
         {
             return _playerColorsConfig.GetRandomColor();
         }
-
-        //[ServerRpc]
+        
         public void OnPlayerSpawn(PlayerProfile player)
         {
             _alivePlayers.AddLast(player);
         }
         
-        //[ServerRpc]
         public void OnPlayerDespawn(PlayerProfile player)
         {
             _alivePlayers.Remove(player);
@@ -68,9 +66,26 @@ namespace Network
         [ClientRpc]
         private void ShowGameEndPopupClientRpc(string winnerName, int winnerScore)
         {
-            Debug.Log("HUD: " + (HeadUpDisplay.Instance != null));
-            
-            HeadUpDisplay.Instance.ShowGameEndPopup(winnerName, winnerScore);
+            HeadUpDisplay.Instance.ShowGameEndPopup(winnerName, winnerScore, Cleanup);
+        }
+
+        private void Cleanup()
+        {
+            NetworkManager.Singleton.Shutdown();
+
+            if (_alivePlayers != null)
+            {
+                _alivePlayers.Clear();
+            }
+
+            LocalPlayerName = string.Empty;
+
+            if (NetworkManager.Singleton != null)
+            {
+                Destroy(NetworkManager.Singleton.gameObject);
+            }
+
+            SceneManager.LoadScene("Lobby");
         }
     }
 }
