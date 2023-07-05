@@ -286,7 +286,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: -1262438155
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &635423269
 RectTransform:
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5271e80402b3477795b9007b7c2fa0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnCooldown: 5
+  _spawnCooldown: 0.1
   _coinsSpawnArea:
     serializedVersion: 2
     x: 0

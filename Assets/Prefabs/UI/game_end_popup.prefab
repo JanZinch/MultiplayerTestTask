@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
+  m_Color: {r: 0.16286935, g: 0.7075472, b: 0.6709788, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -231,7 +231,6 @@ MonoBehaviour:
   _winnerNameMessage: {fileID: 992827817720731994}
   _winnerScoreMessage: {fileID: 992827818294934662}
   _exitButton: {fileID: 992827817460291196}
-  _networkObject: {fileID: 0}
 --- !u!1 &992827817300963698
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,7 +635,7 @@ GameObject:
   - component: {fileID: 992827818294934681}
   - component: {fileID: 992827818294934662}
   m_Layer: 5
-  m_Name: winner_name_text (1)
+  m_Name: winner_score_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
