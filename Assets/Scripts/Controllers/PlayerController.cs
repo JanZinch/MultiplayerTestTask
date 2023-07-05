@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Managers;
 using TMPro;
+using Unity.Netcode;
 
 namespace Controllers
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : NetworkBehaviour
     {
         [SerializeField] private float _maxSpeed = 3.0f;
         [SerializeField] private float _shootingCooldown = 1.0f;
@@ -95,13 +96,16 @@ namespace Controllers
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent<Coin>(out Coin coin))
+            if (IsHost)
             {
-                _score.Add(coin.Collect());
-            }
-            else if (other.TryGetComponent<Projectile>(out Projectile projectile))
-            {
-                _destructible.MakeDamage(projectile.Catch());
+                if (other.TryGetComponent<Coin>(out Coin coin))
+                {
+                    _score.Add(coin.Collect());
+                }
+                else if (other.TryGetComponent<Projectile>(out Projectile projectile))
+                {
+                    _destructible.MakeDamage(projectile.Catch());
+                }
             }
         }
         
