@@ -74,16 +74,22 @@ namespace Controllers
         {
             if (_timeBetweenShots > _shootingCooldown)
             {
-                foreach (Transform point in _projectileSpawnPoints)
-                {
-                    Projectile projectile = EnvironmentSpawner.Instance.SpawnProjectile(point.position, transform.up);
-                    Physics2D.IgnoreCollision(_selfCollider, projectile.Collider);
-                }
+                ShootServerRpc();
                 
                 _timeBetweenShots = 0.0f;
             }
         }
-        
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ShootServerRpc()
+        {
+            foreach (Transform point in _projectileSpawnPoints)
+            {
+                Projectile projectile = EnvironmentSpawner.Instance.SpawnProjectile(point.position, transform.up);
+                Physics2D.IgnoreCollision(_selfCollider, projectile.Collider);
+            }
+        }
+
         private void Update()
         {
             if (_locallyControlled)
