@@ -6,12 +6,22 @@ using UnityEngine;
 
 namespace Common
 {
-    public class Score : MonoBehaviour
+    public class Score : NetworkBehaviour
     {
         [SerializeField] private TextMeshProUGUI _scoreText;
 
-        private int _score;
-        
+        private NetworkVariable<int> _score = new NetworkVariable<int>(0);
+
+        public override void OnNetworkSpawn()
+        {
+            _score.OnValueChanged += OnValueChanged;
+        }
+
+        private void OnValueChanged(int previous, int current)
+        {
+            if (_scoreText != null) _scoreText.text = current.ToString();
+        }
+
         public void SetView(TextMeshProUGUI text)
         {
             _scoreText = text;
@@ -20,18 +30,18 @@ namespace Common
 
         public void Set(int score)
         {
-            _score = score;
-            if (_scoreText != null) _scoreText.text = _score.ToString();
+            _score.Value = score;
+            //if (_scoreText != null) _scoreText.text = _score.Value.ToString();
         }
 
         public void Add(int addend)
         {
-            Set(_score + addend);
+            Set(_score.Value + addend);
         }
 
         public int Get()
         {
-            return _score;
+            return _score.Value;
         }
     }
 }

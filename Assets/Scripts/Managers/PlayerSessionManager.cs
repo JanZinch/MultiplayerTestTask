@@ -13,7 +13,7 @@ namespace Managers
         [SerializeField] private PlayerCanvas _followCanvasOriginal;
         [SerializeField] private Transform _followCanvasPoint;
 
-        private void Start()
+        public override void OnNetworkSpawn()
         {
             if (IsOwner)
             {
@@ -29,5 +29,6 @@ namespace Managers
             playerCanvas.SetTargetToFollow(_playerController.transform);
             _playerController.InjectViews(playerCanvas.HealthBar, playerCanvas.CoinsCounter);
         }
+        
     }
 }
