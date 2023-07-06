@@ -32,14 +32,13 @@ namespace Controllers
         
         private float _timeBetweenShots;
         private Vector2 _motion;
+        private bool _isDead;
         
         public int Score => _score.Get();
         public event Action OnDeath;
         
         public void InjectControlDevices(Joystick motionJoystick, Button shootingButton)
         {
-            Debug.Log("Injected");
-            
             _motionJoystick = motionJoystick;
             _shootingButton = shootingButton;
             _locallyControlled = true;
@@ -57,15 +56,7 @@ namespace Controllers
         {
             _renderer.material.color = color;
         }
-
-        /*private void OnEnable()
-        {
-            if (_isSelfController)
-            {
-                _shootingButton.onClick.AddListener(ShootIfReady);
-            }
-        }*/
-
+        
         public override void OnNetworkSpawn()
         {
             _destructible.OnDeath.AddListener(OnDeathInvoke);
@@ -74,6 +65,7 @@ namespace Controllers
         private void OnDeathInvoke()
         {
             OnDeath?.Invoke();
+            _isDead = true;
         }
 
         private static Vector2 Clamp(Vector2 position, Rect area)
@@ -98,7 +90,7 @@ namespace Controllers
 
         private void ShootIfReady()
         {
-            if (_timeBetweenShots > _shootingCooldown)
+            if (_timeBetweenShots > _shootingCooldown && !_isDead)
             {
                 ShootServerRpc();
                 
@@ -118,11 +110,10 @@ namespace Controllers
 
         private void Update()
         {
-            if (_locallyControlled)
+            if (_locallyControlled && !_isDead)
             {
                 _timeBetweenShots += Time.deltaTime;
                 MoveByJoystick();
-                
             }
         }
 
@@ -145,13 +136,5 @@ namespace Controllers
         {
             _destructible.OnDeath.RemoveListener(OnDeathInvoke);;
         }
-
-        /*private void OnDisable()
-        {
-            if (_isSelfController)
-            {
-                _shootingButton.onClick.RemoveListener(ShootIfReady);
-            }
-        }*/
     }
 }

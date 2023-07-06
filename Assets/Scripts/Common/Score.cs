@@ -1,7 +1,5 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Common
@@ -31,7 +29,6 @@ namespace Common
         public void Set(int score)
         {
             _score.Value = score;
-            //if (_scoreText != null) _scoreText.text = _score.Value.ToString();
         }
 
         public void Add(int addend)

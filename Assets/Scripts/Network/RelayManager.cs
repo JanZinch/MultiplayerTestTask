@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -84,11 +80,5 @@ namespace Network
             
             SceneManager.activeSceneChanged -= OnSceneChanged;
         }
-
-        public void CompleteRelay()
-        {
-            NetworkManager.Singleton.Shutdown();
-        }
-
     }
 }

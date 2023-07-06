@@ -12,6 +12,7 @@ namespace Managers
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private PlayerCanvas _followCanvasOriginal;
         [SerializeField] private Vector3 _followCanvasOffset = new Vector3(0f, 1f, 0f);
+        [SerializeField] private NetworkObject _networkObject;
         
         private NetworkVariable<FixedString64Bytes> _name = new NetworkVariable<FixedString64Bytes>(default, 
                 NetworkVariableReadPermission.Everyone, 
@@ -59,6 +60,14 @@ namespace Managers
                     PlayerProfilesManager.Instance.OnPlayerDespawn(this);
                 };
 
+            }
+
+            if (IsHost)
+            {
+                _playerController.OnDeath += () =>
+                {
+                    _networkObject.Despawn(true);
+                };
             }
         }
     }

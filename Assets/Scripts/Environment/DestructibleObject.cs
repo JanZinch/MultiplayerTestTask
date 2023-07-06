@@ -29,11 +29,6 @@ namespace Environment
         private void OnHealthValueChanged(int previous, int current)
         {
             UpdateView();
-        }
-        
-        public void MakeDamage(int damage)
-        {
-            _health.Value = Mathf.Clamp(_health.Value - damage, 0, _maxHealth);
             
             _onHealthUpdate?.Invoke(_health.Value);
             
@@ -44,6 +39,11 @@ namespace Environment
                 _onHealthUpdate?.RemoveAllListeners();
                 _onDeath?.RemoveAllListeners();
             }
+        }
+        
+        public void MakeDamage(int damage)
+        {
+            _health.Value = Mathf.Clamp(_health.Value - damage, 0, _maxHealth);
         }
 
         public void SetView(UIBehaviour view)

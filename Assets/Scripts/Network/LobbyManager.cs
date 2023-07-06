@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using UI;
-using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Network
 {
@@ -71,8 +69,6 @@ namespace Network
                 if (_lobbyPollTimer <= 0.0f)
                 {
                     _lobbyPollTimer = LobbyPollMax;
-
-                    Debug.Log("Poll");
                     
                     if (_role == Role.Host)
                     {
@@ -81,9 +77,7 @@ namespace Network
                         if (StartSessionCause(_lobby.Players.Count >= _minPlayers))
                         {
                             string joinCode = await _relayManager.CreateRelay();
-
-                            Debug.Log("Create relay");
-                        
+                            
                             await Lobbies.Instance.UpdateLobbyAsync(_lobby.Id, new UpdateLobbyOptions()
                             {
                                 Data = new Dictionary<string, DataObject>()
@@ -101,12 +95,9 @@ namespace Network
                         
                         if (StartSessionCause(_lobby.Data[StartGameKey].Value != string.Empty))
                         {
-                            Debug.Log("Try Join Relay");
-                            
                             await _relayManager.JoinRelay(_lobby.Data[StartGameKey].Value);
                             
                             _relayManager.LaunchRelay();
-                            
                         }
                     }
                 }
@@ -208,7 +199,6 @@ namespace Network
             {
                 Debug.LogException(ex);
             }
-        
         }
     
         private void OnDisable()

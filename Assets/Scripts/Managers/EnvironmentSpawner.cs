@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Environment;
 using Unity.Netcode;
 using UnityEngine;
@@ -31,16 +30,9 @@ namespace Managers
                 Instance = this;
             }
         }
-
-        public override void OnNetworkSpawn()
-        {
-            Debug.Log("O IsHost: " + IsHost);
-        }
-
+        
         private void Start()
         {
-            Debug.Log("S IsHost: " + IsHost);
-            
             if (IsHost)
             {
                 StartCoroutine(SpawnCoins(_spawnCooldown));

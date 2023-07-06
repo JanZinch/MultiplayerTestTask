@@ -18,8 +18,6 @@ namespace Environment
         {
             if (IsHost)
             {
-                Debug.Log("TRY DESPAWN");
-                
                 _networkObject.Despawn(true);
             }
             
